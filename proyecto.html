@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Números</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/estilos.css">
+       <script src="js/libs/bignumber.js/bignumber.min.js"></script>
+       <script src="js/libs/numeral.js/numeral.min.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Números</h1>
+    </header>
+    <form id="forma" action="javascript:procesa()">
+        <p><em>El borde azul indica obligatorio</em></p>
+        <p>
+            <label accesskey="E">
+                Entero<br>
+                <input name="entero" type="number" autofocus required>
+            </label>
+            <br><output id="salidaEntero"></output>
+        </p>
+        <p>
+            <label accesskey="R">
+                Rango<br>
+                <input name="rango" type="range" min="0" max="10"
+                       list="rayas">
+            </label>
+            <br><output id="salidaRango"></output>
+        </p>
+        <p>
+            <label accesskey="P">
+                Porcentaje de Entero/Rango<br>
+                <meter id="medidor" min="0" max="1" low="0.3" high="0.7"
+                       optimum="0.5" value="0"></meter>
+            </label>
+            <br><output id="salidaPorcentaje"></output>
+        </p>
+        <p>
+            <label accesskey="N">
+                Número<br>
+                <input name="numero" type="text" class="numero" required
+                       pattern="[0-9,]+[.]\d{2}?" placeholder="2 decimales"
+                       maxlength="11" size="13" value=".00">
+            </label>
+            <br><output id="salidaNumero"></output>
+                </p>
+                <p><input type="submit" value="Procesar" accesskey="P">
+                    <input type="reset" value="Limpiar"></p>
+            </form>
+            <footer>
+                Copyright 2021 Izazaga Martinez Daniel Alejandro
+            </footer>
+            <datalist id="rayas">
+                <option>0</option>                
+                <option>1</option>                
+                <option>2</option>                
+                <option>3</option>                
+                <option>4</option>                
+                <option>5</option>                
+                <option>6</option>                
+                <option>7</option>                
+                <option>8</option>                
+                <option>9</option>                
+                <option>10</option>                
+            </datalist>
+        <script src="js/util.js"></script>
+    </body>
+</html>
