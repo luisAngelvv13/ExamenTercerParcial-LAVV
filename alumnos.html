@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+    content="width=device-width,
+       initial-scale=1.0">
+  <title>Alumnos</title>
+  <script
+    src="https://www.gstatic.com/firebasejs/8.2.3/firebase-app.js">
+    </script>
+  <script
+    src="https://www.gstatic.com/firebasejs/8.2.3/firebase-auth.js">
+    </script>
+  <script
+    src="https://www.gstatic.com/firebasejs/8.2.3/firebase-firestore.js">
+    </script>
+  <script src="js/init.js">
+  </script>
+  <script type="module"
+    src="cmp/mi-nav.js">
+    </script>
+  <script type="module"
+    src="cmp/mi-footer.js">
+    </script>
+  <script type="module"
+    src="cmp/mi-progreso.js">
+    </script>
+  <link rel="stylesheet"
+    href="css/estilos.css">
+</head>
+<body>
+  <mi-nav></mi-nav>
+  <header>
+    <h1>Alumnos</h1>
+    <div class="herramientas">
+      <a
+        href="alumnoNuevo.html">
+        Agregar…</a>
+    </div>
+  </header>
+  <ul id="lista" class="lista">
+    <li>
+      <mi-progreso>
+      </mi-progreso>
+    </li>
+  </ul>
+  <mi-footer></mi-footer>
+  <script type="module"
+    src="js/CtrlAlumnos.js">
+    </script>
+</body>
+</html>
