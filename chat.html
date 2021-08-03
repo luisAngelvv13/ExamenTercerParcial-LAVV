@@ -1,56 +1,82 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport"
-    content="width=device-width,
-       initial-scale=1.0">
-  <title>Chat</title>
-  <script
-    src="https://www.gstatic.com/firebasejs/8.5.0/firebase-app.js">
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Chat</title>
+    <link rel="stylesheet" href="estilos.css">
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-auth.js">
     </script>
-  <script
-    src="https://www.gstatic.com/firebasejs/8.5.0/firebase-auth.js">
+    <script
+    src="https://www.gstatic.com/firebasejs/8.3.1/firebase-firestore.js">
     </script>
-  <script
-    src="https://www.gstatic.com/firebasejs/8.5.0/firebase-firestore.js">
+    <script src="js/init.js"></script>
+    
+  </head>
+  <body>
+    <h1>Chat</h1>
+    <form action="javascript:agrega();">
+      <input id="texto" type="text" required placeholder="Mensaje">
+      <button>Enviar</button>
+    </form>
+    <ol id="mensajes"><li><progress max="100">Cargando…</progress></li></ol>
+    <script>
+
+      let usuario = "";
+      const auth = firebase.auth();
+      const provider = new firebase.auth.GoogleAuthProvider();
+      provider.setCustomParameters({ prompt: "select_account" });
+      auth.onAuthStateChanged(
+        async usuarioAuth => {
+          if (usuarioAuth && usuarioAuth.email) {
+            usuario = usuarioAuth.email;
+            muestraMensajes();
+          } else {
+            await auth.signInWithRedirect(provider);
+          }
+        },
+        procesaError
+      );
+      const firestore = firebase.firestore();
+      function agrega() {
+        firestore.collection("MENSAJE").add({
+          USUARIO: usuario,
+          TEXTO: texto.value.trim(),
+          TIMESTAMP: firebase.firestore.FieldValue.serverTimestamp()
+        });
+      }
+      function muestraMensajes() {
+        firestore.collection("MENSAJE").orderBy("TIMESTAMP", "desc")
+          .onSnapshot(
+            querySnapshot => {
+              mensajes.innerHTML = "";
+              querySnapshot.forEach(doc => {
+                const data = doc.data();
+                var d = data.TIMESTAMP.toDate(),
+                dformat = [d.getDate(), d.getMonth()+1, d.getFullYear()].join('/')+' '+
+                          [d.getHours(),d.getMinutes(),d.getSeconds()].join(':');
+                mensajes.innerHTML += /* html */
+                  `<li><u>${cod(data.USUARIO)}</u> ${dformat}<br>${cod(data.TEXTO)}</li>`;
+              })
+            },
+
+            e => {
+              procesaError(e);
+              // Intenta conectarse otra vez.
+              muestraMensajes();
+            }
+          )
+      }
+      function procesaError(e) {
+        console.log(e);
+        alert(e.message);
+      }
+      const codMap = Object.freeze(new Map([['&', '&amp;'], ['<', '&lt;'],
+      ['>', '&gt;'], ['"', '&quot;'], ["'", '&#039;']]));
+      function cod(texto) {
+        return (texto || "").replace(/[&<>"']/g, letra => codMap.get(letra));
+      }
     </script>
-  <script src="js/init.js">
-  </script>
-  <script type="module"
-    src="cmp/mi-nav.js">
-    </script>
-  <script type="module"
-    src="cmp/mi-footer.js">
-    </script>
-  <script type="module"
-    src="cmp/mi-progreso.js">
-    </script>
-  <link rel="stylesheet"
-    href="css/estilos.css">
-</head>
-<body>
-  <mi-nav></mi-nav>
-  <form name="forma">
-    <header>
-      <h1>Chat</h1>
-      <div class="herramientas">
-        <input name="texto"
-          required
-          placeholder="Mensaje">
-        <button>Enviar</button>
-      </div>
-    </header>
-    <ul id="lista" class="lista">
-      <li>
-        <mi-progreso>
-        </mi-progreso>
-      </li>
-    </ul>
-    <mi-footer></mi-footer>
-  </form>
-  <script type="module"
-    src="js/CtrlChat.js">
-    </script>
-</body>
+  </body>
 </html>
